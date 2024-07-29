@@ -11,4 +11,4 @@ springdoc:
 service:
   github:
     url: https://api.github.com
-    token: :token
+    token: ${git_hub_token}

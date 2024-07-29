@@ -10,8 +10,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static com.atipera.gr.handler.GlobalExceptionHandler.webClientErrorHandler;
-
 /**
  * Created by bogdan.kalika@gmail.com
  * Date: 7/26/2024
@@ -25,8 +23,8 @@ public class GitHubService implements IGitHubService {
     @Value("${service.github.token}")
     private String token;
 
-    public GitHubService(WebClient.Builder webClientBuilder, @Value("${service.github.url}") String githubUrl) {
-        this.webClient = webClientBuilder.filter(webClientErrorHandler()).baseUrl(githubUrl).build();
+    public GitHubService(WebClient webClient) {
+        this.webClient = webClient;
     }
 
     @Override
