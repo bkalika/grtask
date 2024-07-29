@@ -15,7 +15,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -89,10 +88,10 @@ class GitHubServiceTest {
 
         StepVerifier.create(result)
                 .expectNextMatches(repositoryResponseDto ->
-                    "Repo1".equals(repositoryResponseDto.repositoryName()) &&
-                    "testuser".equals(repositoryResponseDto.ownerLogin()) &&
-                            getBranches().getFirst().getName().equals(repositoryResponseDto.branches().getFirst().name()) &&
-                        getBranches().get(1).getName().equals(repositoryResponseDto.branches().get(1).name())
+                        "Repo1".equals(repositoryResponseDto.repositoryName()) &&
+                                "testuser".equals(repositoryResponseDto.ownerLogin()) &&
+                                getBranches().getFirst().getName().equals(repositoryResponseDto.branches().getFirst().name()) &&
+                                getBranches().get(1).getName().equals(repositoryResponseDto.branches().get(1).name())
                 )
                 .expectComplete()
                 .verify();
