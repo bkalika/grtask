@@ -6,6 +6,6 @@ import java.util.List;
  * Created by bogdan.kalika@gmail.com
  * Date: 7/26/2024
  */
-public record RepositoryResponseDto(String repositoryName, String ownerLogin, List<Branch> branches) {
+public record RepositoryResponseDto(String repositoryName, String ownerLogin, List<BranchResponseDto> branches) {
 
 }

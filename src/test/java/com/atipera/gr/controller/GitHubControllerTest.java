@@ -1,6 +1,6 @@
 package com.atipera.gr.controller;
 
-import com.atipera.gr.dto.Branch;
+import com.atipera.gr.dto.BranchResponseDto;
 import com.atipera.gr.dto.RepositoryResponseDto;
 import com.atipera.gr.service.GitHubService;
 import org.junit.jupiter.api.Test;
@@ -35,9 +35,9 @@ class GitHubControllerTest {
 
     @Test
     void testUserRepositories() {
-        List<Branch> branches = new ArrayList<>();
-        branches.add(new Branch("master", "master"));
-        branches.add(new Branch("branch1", "branch1"));
+        List<BranchResponseDto> branches = new ArrayList<>();
+        branches.add(new BranchResponseDto("master", "asdf"));
+        branches.add(new BranchResponseDto("branch1", "asdfasd"));
         RepositoryResponseDto repositoryResponseDto = new RepositoryResponseDto("Repo1", "testlogin", branches);
 
         when(gitHubService.getRepositoriesWithBranches(anyString())).thenReturn(Flux.just(repositoryResponseDto));

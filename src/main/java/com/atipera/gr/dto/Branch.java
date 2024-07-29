@@ -13,8 +13,6 @@ public class Branch {
 
     private String name;
 
-    private String lastCommitSha;
-
     private Commit commit;
 
     @Data
@@ -23,8 +21,8 @@ public class Branch {
         private String sha;
     }
 
-    public Branch(String name, String lastCommitSha) {
+    public Branch(String name, Commit commit) {
         this.name = name;
-        this.lastCommitSha = lastCommitSha;
+        this.commit = commit;
     }
 }

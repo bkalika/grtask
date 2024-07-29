@@ -1,6 +1,7 @@
 package com.atipera.gr.service;
 
 import com.atipera.gr.dto.Branch;
+import com.atipera.gr.dto.BranchResponseDto;
 import com.atipera.gr.dto.Repository;
 import com.atipera.gr.dto.RepositoryResponseDto;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +50,7 @@ public class GitHubService implements IGitHubService {
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .bodyToFlux(Branch.class)
-                .map(branch -> new Branch(branch.getName(), branch.getCommit().getSha()))
+                .map(branch -> new BranchResponseDto(branch.getName(), branch.getCommit().getSha()))
                 .collectList()
                 .map(branches -> new RepositoryResponseDto(repository.getName(), repository.getOwner().getLogin(), branches));
     }
