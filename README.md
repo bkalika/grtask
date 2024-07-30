@@ -54,5 +54,16 @@ This application includes automatically generated API documentation and a Swagge
 - API Docs: View the full API documentation at [ApiDocs](http://localhost:8080/api-docs)
 - Swagger UI: Explore and test the API using the Swagger UI at [Swagger](http://localhost:8080/swagger-ui/index.html)
 
+## Errors
+
+When an error occurs, the application will return a response with appropriate HTTP Status code and message with the following structure:
+
+```
+{
+  "status": "${httpStatusCode}",
+  "message": "${errorMessage}"
+}
+```
+
 ## Contact
 For questions or suggestions, please open an issue or contact [bogdan.kalika@gmail.com](mailto:bogdan.kalika@gmail.com).
