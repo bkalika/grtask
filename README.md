@@ -23,6 +23,32 @@ This Spring Boot application fetches all non-forked repositories for a given Git
    git clone https://github.com/bkalika/atipera.git
    cd atipera
 
+## Docker Setup
+
+This project can be containerized using Docker. Follow the instructions below to build and run the Docker image for this project.
+
+### Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/) installed on your machine.
+- Basic knowledge of Docker commands.
+
+### Building the Docker Image
+
+1. **Ensure the application is built**: Before building the Docker image, make sure your application is built and the JAR file is available. Run the following command:
+
+   ```bash
+   ./gradlew clean build
+
+2. **Build the Docker image:** Use the following command to build the Docker image:
+
+   ```bash
+   docker build -t gr .
+
+3. **Run the Docker container:** Start a container from the built image using the following command. This command also sets the GIT_HUB_TOKEN environment variable.
+
+   ```bash
+   docker run -p 8080:8080 -e GIT_HUB_TOKEN={YOUR_GITHUB_TOKEN} gr
+
 ## API Documentation
 This application includes automatically generated API documentation and a Swagger UI to interact with the API endpoints.
 - API Docs: View the full API documentation at [ApiDocs](http://localhost:8080/api-docs)
