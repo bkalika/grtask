@@ -11,6 +11,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Comparator;
+
 /**
  * Created by bogdan.kalika@gmail.com
  * Date: 7/26/2024
@@ -31,12 +33,14 @@ public class GitHubService implements IGitHubService {
     @Override
     public Flux<RepositoryResponseDto> getRepositoriesWithBranches(String username) {
         return getNotForkedRepositories(username)
-                .flatMap(this::getBranchesForRepository);
+                .flatMap(this::getBranchesForRepository)
+                .sort(Comparator.comparing(RepositoryResponseDto::repositoryName));
     }
 
     @Override
     public Flux<Repository> getNotForkedRepositories(String username) {
-        return this.webClient.get().uri("/users/{username}/repos", username)
+        return this.webClient.get().uri("/users/{username}/repos?type=all", username)
+                .header("Accept", "application/vnd.github+json")
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .bodyToFlux(Repository.class)
@@ -47,6 +51,7 @@ public class GitHubService implements IGitHubService {
         String branchesUrl = repository.getBranchesUrl().replace("{/branch}", "");
         return this.webClient.get()
                 .uri(branchesUrl)
+                .header("Accept", "application/vnd.github+json")
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .bodyToFlux(Branch.class)
