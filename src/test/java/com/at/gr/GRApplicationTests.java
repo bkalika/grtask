@@ -9,5 +9,4 @@ class GRApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
