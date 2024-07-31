@@ -7,4 +7,7 @@ import java.util.List;
  * Date: 7/26/2024
  */
 public record RepositoryResponseDto(String repositoryName, String ownerLogin, List<BranchResponseDto> branches) {
+
+    public record BranchResponseDto(String name, String lastCommitSha) {
+    }
 }

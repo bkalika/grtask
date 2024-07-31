@@ -9,4 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record Repository(String name, Owner owner, boolean fork, @JsonProperty("branches_url") String branchesUrl) {
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public record Owner(String login) {
+    }
 }

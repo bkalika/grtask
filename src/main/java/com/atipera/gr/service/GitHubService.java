@@ -1,14 +1,12 @@
 package com.atipera.gr.service;
 
 import com.atipera.gr.dto.Branch;
-import com.atipera.gr.dto.BranchResponseDto;
 import com.atipera.gr.dto.Repository;
 import com.atipera.gr.dto.RepositoryResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.Comparator;
 
@@ -29,7 +27,11 @@ public class GitHubService implements IGitHubService {
     @Override
     public Flux<RepositoryResponseDto> getRepositoriesWithBranches(String username) {
         return getNotForkedRepositories(username)
-                .flatMap(this::getBranchesForRepository)
+                .flatMap(repository -> getBranchesForRepository(repository)
+                        .map(branch -> new RepositoryResponseDto.BranchResponseDto(branch.name(), branch.commit().sha()))
+                        .collectList()
+                        .map(branches -> new RepositoryResponseDto(repository.name(), repository.owner().login(), branches))
+                )
                 .sort(Comparator.comparing(RepositoryResponseDto::repositoryName));
     }
 
@@ -45,14 +47,11 @@ public class GitHubService implements IGitHubService {
                 .filter(repository -> !repository.fork());
     }
 
-    public Mono<RepositoryResponseDto> getBranchesForRepository(Repository repository) {
+    public Flux<Branch> getBranchesForRepository(Repository repository) {
         String branchesUrl = repository.branchesUrl().replace("{/branch}", "");
         return this.webClient.get()
                 .uri(branchesUrl)
                 .retrieve()
-                .bodyToFlux(Branch.class)
-                .map(branch -> new BranchResponseDto(branch.name(), branch.commit().sha()))
-                .collectList()
-                .map(branches -> new RepositoryResponseDto(repository.name(), repository.owner().login(), branches));
+                .bodyToFlux(Branch.class);
     }
 }

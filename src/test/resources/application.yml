@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: atipera
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+springdoc:
+  api-docs:
+    path: /api-docs
+
+service:
+  github:
+    url: http://localhost:8443
+    token: ghp_
