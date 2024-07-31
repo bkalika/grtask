@@ -48,7 +48,7 @@ public class GitHubService implements IGitHubService {
     }
 
     public Flux<Branch> getBranchesForRepository(Repository repository) {
-        String branchesUrl = repository.branchesUrl().replace("{/branch}", "");
+        var branchesUrl = repository.branchesUrl().replace("{/branch}", "");
         return this.webClient.get()
                 .uri(branchesUrl)
                 .retrieve()

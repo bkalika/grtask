@@ -2,13 +2,11 @@ package com.atipera.gr.controller;
 
 import com.atipera.gr.dto.RepositoryResponseDto;
 import com.atipera.gr.exception.ApplicationException;
-import com.atipera.gr.service.IGitHubService;
+import com.atipera.gr.service.GitHubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
-
-import java.util.regex.Pattern;
 
 /**
  * Created by bogdan.kalika@gmail.com
@@ -18,25 +16,23 @@ import java.util.regex.Pattern;
 @RequestMapping("/api/v1")
 public class GitHubController {
 
-    private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]{3,30}$");
-
-    private final IGitHubService iGitHubService;
+    private final GitHubService gitHubService;
 
     @Autowired
-    public GitHubController(IGitHubService iGitHubService) {
-        this.iGitHubService = iGitHubService;
+    public GitHubController(GitHubService gitHubService) {
+        this.gitHubService = gitHubService;
     }
 
     @GetMapping(value = "/users/{username}/repositories")
     public Flux<RepositoryResponseDto> userRepositories(@PathVariable String username,
                                                         @RequestHeader("Accept") String accept) {
-        validateUsername(username);
-        return iGitHubService.getRepositoriesWithBranches(username);
+        validateAcceptHeader(accept);
+        return gitHubService.getRepositoriesWithBranches(username);
     }
 
-    private static void validateUsername(String username) {
-        if (!USERNAME_PATTERN.matcher(username).matches()) {
-            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid username");
+    private static void validateAcceptHeader(String accept) {
+        if (!"application/json".equalsIgnoreCase(accept)) {
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid Accept header");
         }
     }
 }
