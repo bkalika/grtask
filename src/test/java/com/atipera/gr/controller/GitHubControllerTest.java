@@ -15,7 +15,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,9 +38,10 @@ class GitHubControllerTest {
 
     @Test
     void testUserRepositories() {
-        List<BranchResponseDto> branches = new ArrayList<>();
-        branches.add(new BranchResponseDto("master", "asdf"));
-        branches.add(new BranchResponseDto("branch1", "asdfasd"));
+        List<BranchResponseDto> branches = List.of(
+                new BranchResponseDto("master", "asdf"),
+                new BranchResponseDto("branch1", "asdfasd")
+        );
         RepositoryResponseDto repositoryResponseDto = new RepositoryResponseDto("Repo1", "testlogin", branches);
 
         when(gitHubService.getRepositoriesWithBranches(anyString())).thenReturn(Flux.just(repositoryResponseDto));
@@ -73,8 +73,8 @@ class GitHubControllerTest {
                 .expectBody(ApplicationExceptionDto.class)
                 .value(response -> {
                     assertNotNull(response);
-                    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getStatus());
-                    assertEquals("400 BAD_REQUEST \"Required header 'Accept' is not present.\"", response.getMessage());
+                    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.status());
+                    assertEquals("400 BAD_REQUEST \"Required header 'Accept' is not present.\"", response.message());
                 });
 
         verify(gitHubService, times(0)).getRepositoriesWithBranches(anyString());
@@ -90,8 +90,8 @@ class GitHubControllerTest {
                 .expectBody(ApplicationExceptionDto.class)
                 .value(response -> {
                     assertNotNull(response);
-                    assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
-                    assertEquals("Invalid username", response.getMessage());
+                    assertEquals(HttpStatus.BAD_REQUEST.value(), response.status());
+                    assertEquals("Invalid username", response.message());
                 });
 
         verify(gitHubService, times(0)).getRepositoriesWithBranches(anyString());

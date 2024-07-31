@@ -1,9 +1,6 @@
 package com.atipera.gr.service;
 
-import com.atipera.gr.dto.Branch;
-import com.atipera.gr.dto.Owner;
-import com.atipera.gr.dto.Repository;
-import com.atipera.gr.dto.RepositoryResponseDto;
+import com.atipera.gr.dto.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,16 +57,16 @@ class GitHubServiceTest {
 
         StepVerifier.create(result)
                 .assertNext(repository -> {
-                    assertEquals("Repo1", repository.getName());
-                    assertEquals("testuser", repository.getOwner().getLogin());
-                    assertFalse(repository.isFork());
-                    assertEquals("https://api.github.com/repos/Repo1", repository.getBranchesUrl());
+                    assertEquals("Repo1", repository.name());
+                    assertEquals("testuser", repository.owner().login());
+                    assertFalse(repository.fork());
+                    assertEquals("https://api.github.com/repos/Repo1", repository.branchesUrl());
                 })
                 .assertNext(repository -> {
-                    assertEquals("Repo2", repository.getName());
-                    assertEquals("testuser", repository.getOwner().getLogin());
-                    assertFalse(repository.isFork());
-                    assertEquals("https://api.github.com/repos/Repo2", repository.getBranchesUrl());
+                    assertEquals("Repo2", repository.name());
+                    assertEquals("testuser", repository.owner().login());
+                    assertFalse(repository.fork());
+                    assertEquals("https://api.github.com/repos/Repo2", repository.branchesUrl());
                 })
                 .expectComplete()
                 .verify();
@@ -90,8 +87,8 @@ class GitHubServiceTest {
                 .expectNextMatches(repositoryResponseDto ->
                         "Repo1".equals(repositoryResponseDto.repositoryName()) &&
                                 "testuser".equals(repositoryResponseDto.ownerLogin()) &&
-                                getBranches().getFirst().getName().equals(repositoryResponseDto.branches().getFirst().name()) &&
-                                getBranches().get(1).getName().equals(repositoryResponseDto.branches().get(1).name())
+                                getBranches().getFirst().name().equals(repositoryResponseDto.branches().getFirst().name()) &&
+                                getBranches().get(1).name().equals(repositoryResponseDto.branches().get(1).name())
                 )
                 .expectComplete()
                 .verify();
@@ -121,50 +118,35 @@ class GitHubServiceTest {
                 .assertNext(rrd -> {
                     assertEquals("Repo1", rrd.repositoryName());
                     assertEquals("testuser", rrd.ownerLogin());
-                    assertEquals(getBranches().getFirst().getName(), rrd.branches().getFirst().name());
-                    assertEquals(getBranches().getFirst().getCommit().getSha(), rrd.branches().getFirst().lastCommitSha());
+                    assertEquals(getBranches().getFirst().name(), rrd.branches().getFirst().name());
+                    assertEquals(getBranches().getFirst().commit().sha(), rrd.branches().getFirst().lastCommitSha());
                 })
                 .assertNext(rrd -> {
                     assertEquals("Repo2", rrd.repositoryName());
                     assertEquals("testuser", rrd.ownerLogin());
-                    assertEquals(getBranches().getFirst().getName(), rrd.branches().getFirst().name());
-                    assertEquals(getBranches().getFirst().getCommit().getSha(), rrd.branches().getFirst().lastCommitSha());
+                    assertEquals(getBranches().getFirst().name(), rrd.branches().getFirst().name());
+                    assertEquals(getBranches().getFirst().commit().sha(), rrd.branches().getFirst().lastCommitSha());
                 })
                 .expectComplete()
                 .verify();
     }
 
     private List<Repository> getRepositories() {
-        Owner owner = new Owner();
-        owner.setLogin("testuser");
+        Owner owner = new Owner("testuser");
 
-        Repository repo1 = new Repository();
-        repo1.setName("Repo1");
-        repo1.setOwner(owner);
-        repo1.setFork(false);
-        repo1.setBranchesUrl("https://api.github.com/repos/Repo1");
+        Repository repo1 = new Repository("Repo1", owner, false, "https://api.github.com/repos/Repo1");
 
-        Repository repo2 = new Repository();
-        repo2.setName("Repo2");
-        repo2.setOwner(owner);
-        repo2.setFork(false);
-        repo2.setBranchesUrl("https://api.github.com/repos/Repo2");
+        Repository repo2 = new Repository("Repo2", owner, false, "https://api.github.com/repos/Repo2");
 
         return Arrays.asList(repo1, repo2);
     }
 
     private List<Branch> getBranches() {
-        Branch branch1 = new Branch();
-        branch1.setName("main");
-        Branch.Commit commit1 = new Branch.Commit();
-        commit1.setSha("123lj123");
-        branch1.setCommit(commit1);
+        Branch.Commit commit1 = new Branch.Commit("123lj123");
+        Branch branch1 = new Branch("main", commit1);
 
-        Branch branch2 = new Branch();
-        branch2.setName("develop");
-        Branch.Commit commit2 = new Branch.Commit();
-        commit2.setSha("4123jkhkj12");
-        branch2.setCommit(commit2);
+        Branch.Commit commit2 = new Branch.Commit("4123jkhkj12");
+        Branch branch2 = new Branch("develop", commit2);
 
         return Arrays.asList(branch1, branch2);
     }

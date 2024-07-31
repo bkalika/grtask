@@ -44,19 +44,19 @@ public class GitHubService implements IGitHubService {
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .bodyToFlux(Repository.class)
-                .filter(repository -> !repository.isFork());
+                .filter(repository -> !repository.fork());
     }
 
     public Mono<RepositoryResponseDto> getBranchesForRepository(Repository repository) {
-        String branchesUrl = repository.getBranchesUrl().replace("{/branch}", "");
+        String branchesUrl = repository.branchesUrl().replace("{/branch}", "");
         return this.webClient.get()
                 .uri(branchesUrl)
                 .header("Accept", "application/vnd.github+json")
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .bodyToFlux(Branch.class)
-                .map(branch -> new BranchResponseDto(branch.getName(), branch.getCommit().getSha()))
+                .map(branch -> new BranchResponseDto(branch.name(), branch.commit().sha()))
                 .collectList()
-                .map(branches -> new RepositoryResponseDto(repository.getName(), repository.getOwner().getLogin(), branches));
+                .map(branches -> new RepositoryResponseDto(repository.name(), repository.owner().login(), branches));
     }
 }
