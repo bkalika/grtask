@@ -1,7 +1,7 @@
-package com.atipera.gr.controller;
+package com.at.gr.controller;
 
-import com.atipera.gr.dto.ApplicationExceptionDto;
-import com.atipera.gr.dto.RepositoryResponseDto;
+import com.at.gr.dto.ApplicationExceptionDto;
+import com.at.gr.dto.RepositoryResponseDto;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,14 +30,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWireMock(port = 8443)
 @DirtiesContext
-public class GitHubControllerWireMockTest {
+public class GitHubControllerTest {
 
     private final WebTestClient webTestClient;
 
     private final WireMockServer wireMockServer;
 
     @Autowired
-    public GitHubControllerWireMockTest(WebTestClient webTestClient, WireMockServer wireMockServer) {
+    public GitHubControllerTest(WebTestClient webTestClient, WireMockServer wireMockServer) {
         this.webTestClient = webTestClient;
         this.wireMockServer = wireMockServer;
     }

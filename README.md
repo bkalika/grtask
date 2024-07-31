@@ -20,8 +20,8 @@ This Spring Boot application fetches all non-forked repositories for a given Git
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/bkalika/atipera.git
-   cd atipera
+   git clone https://github.com/bkalika/grtask.git
+   cd grtask
 
 ## Docker Setup
 

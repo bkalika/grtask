@@ -1,6 +1,6 @@
-package com.atipera.gr.handler;
+package com.at.gr.handler;
 
-import com.atipera.gr.exception.ApplicationException;
+import com.at.gr.exception.ApplicationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.ClientRequest;

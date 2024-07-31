@@ -1,6 +1,6 @@
 spring:
   application:
-    name: atipera
+    name: grtask
   jackson:
     property-naming-strategy: SNAKE_CASE
 

@@ -1,4 +1,4 @@
-package com.atipera.gr.dto;
+package com.at.gr.dto;
 
 /**
  * Created by bogdan.kalika@gmail.com

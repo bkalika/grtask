@@ -1,4 +1,4 @@
-package com.atipera.gr.dto;
+package com.at.gr.dto;
 
 import java.util.List;
 

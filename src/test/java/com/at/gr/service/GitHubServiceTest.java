@@ -1,8 +1,8 @@
-package com.atipera.gr.service;
+package com.at.gr.service;
 
-import com.atipera.gr.dto.Branch;
-import com.atipera.gr.dto.Repository;
-import com.atipera.gr.dto.RepositoryResponseDto;
+import com.at.gr.dto.Branch;
+import com.at.gr.dto.Repository;
+import com.at.gr.dto.RepositoryResponseDto;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,14 +27,14 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWireMock(port = 8443)
 @DirtiesContext
-public class GitHubServiceWireMockTest {
+public class GitHubServiceTest {
 
     private final GitHubService gitHubService;
 
     private final WireMockServer wireMockServer;
 
     @Autowired
-    public GitHubServiceWireMockTest(GitHubService gitHubService, WireMockServer wireMockServer) {
+    public GitHubServiceTest(GitHubService gitHubService, WireMockServer wireMockServer) {
         this.gitHubService = gitHubService;
         this.wireMockServer = wireMockServer;
     }

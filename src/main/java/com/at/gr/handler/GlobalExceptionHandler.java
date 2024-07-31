@@ -1,7 +1,7 @@
-package com.atipera.gr.handler;
+package com.at.gr.handler;
 
-import com.atipera.gr.dto.ApplicationExceptionDto;
-import com.atipera.gr.exception.ApplicationException;
+import com.at.gr.dto.ApplicationExceptionDto;
+import com.at.gr.exception.ApplicationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

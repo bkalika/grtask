@@ -1,7 +1,7 @@
-package com.atipera.gr.service;
+package com.at.gr.service;
 
-import com.atipera.gr.dto.Repository;
-import com.atipera.gr.dto.RepositoryResponseDto;
+import com.at.gr.dto.Repository;
+import com.at.gr.dto.RepositoryResponseDto;
 import reactor.core.publisher.Flux;
 
 public interface IGitHubService {

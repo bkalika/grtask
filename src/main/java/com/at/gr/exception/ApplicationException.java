@@ -1,4 +1,4 @@
-package com.atipera.gr.exception;
+package com.at.gr.exception;
 
 import lombok.Getter;
 import lombok.ToString;

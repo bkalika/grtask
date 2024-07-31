@@ -1,8 +1,8 @@
-package com.atipera.gr.controller;
+package com.at.gr.controller;
 
-import com.atipera.gr.dto.RepositoryResponseDto;
-import com.atipera.gr.exception.ApplicationException;
-import com.atipera.gr.service.GitHubService;
+import com.at.gr.dto.RepositoryResponseDto;
+import com.at.gr.exception.ApplicationException;
+import com.at.gr.service.GitHubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

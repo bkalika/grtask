@@ -1,8 +1,8 @@
-package com.atipera.gr.service;
+package com.at.gr.service;
 
-import com.atipera.gr.dto.Branch;
-import com.atipera.gr.dto.Repository;
-import com.atipera.gr.dto.RepositoryResponseDto;
+import com.at.gr.dto.Branch;
+import com.at.gr.dto.Repository;
+import com.at.gr.dto.RepositoryResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;

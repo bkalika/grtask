@@ -1,10 +1,10 @@
-package com.atipera.gr;
+package com.at.gr;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AtiperaApplicationTests {
+class GRApplicationTests {
 
 	@Test
 	void contextLoads() {
