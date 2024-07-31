@@ -14,6 +14,7 @@ import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -47,9 +48,7 @@ class GitHubServiceTest {
     @Test
     void getNotForkedRepositories_ShouldReturnNonForkedRepos() {
         when(webClientMock.get()).thenReturn(requestHeadersUriSpecMock);
-        when(requestHeadersUriSpecMock.uri(anyString(), anyString())).thenReturn(requestHeadersSpecMock);
-        when(requestHeadersSpecMock.header(anyString(), any())).thenReturn(requestHeadersSpecMock);
-        when(requestHeadersSpecMock.header(anyString(), anyString())).thenReturn(requestHeadersSpecMock);
+        when(requestHeadersUriSpecMock.uri(any(Function.class))).thenReturn(requestHeadersSpecMock);
         when(requestHeadersSpecMock.retrieve()).thenReturn(responseSpecMock);
         when(responseSpecMock.bodyToFlux(Repository.class)).thenReturn(Flux.fromIterable(getRepositories()));
 
@@ -76,8 +75,6 @@ class GitHubServiceTest {
     void getBranchesForRepository_ShouldReturnBranchesForRepository() {
         when(webClientMock.get()).thenReturn(requestHeadersUriSpecMock);
         when(requestHeadersUriSpecMock.uri(anyString())).thenReturn(requestHeadersSpecMock);
-        when(requestHeadersSpecMock.header(anyString(), any())).thenReturn(requestHeadersSpecMock);
-        when(requestHeadersSpecMock.header(anyString(), anyString())).thenReturn(requestHeadersSpecMock);
         when(requestHeadersSpecMock.retrieve()).thenReturn(responseSpecMock);
         when(responseSpecMock.bodyToFlux(Branch.class)).thenReturn(Flux.fromIterable(getBranches()));
 
@@ -98,17 +95,13 @@ class GitHubServiceTest {
     void getRepositoriesWithBranches_ShouldReturnRepositoriesWithBranches() {
         // for getNotForkedRepositories
         when(webClientMock.get()).thenReturn(requestHeadersUriSpecMock);
-        when(requestHeadersUriSpecMock.uri(anyString(), anyString())).thenReturn(requestHeadersSpecMock);
-        when(requestHeadersSpecMock.header(anyString(), any())).thenReturn(requestHeadersSpecMock);
-//        when(requestHeadersSpecMock.header(anyString(), anyString())).thenReturn(requestHeadersSpecMock);
+        when(requestHeadersUriSpecMock.uri(any(Function.class))).thenReturn(requestHeadersSpecMock);
         when(requestHeadersSpecMock.retrieve()).thenReturn(responseSpecMock);
         when(responseSpecMock.bodyToFlux(Repository.class)).thenReturn(Flux.fromIterable(getRepositories()));
 
         // for getBranchesForRepository
         when(webClientMock.get()).thenReturn(requestHeadersUriSpecMock);
         when(requestHeadersUriSpecMock.uri(anyString())).thenReturn(requestHeadersSpecMock);
-        when(requestHeadersSpecMock.header(anyString(), any())).thenReturn(requestHeadersSpecMock);
-//        when(requestHeadersSpecMock.header(anyString(), anyString())).thenReturn(requestHeadersSpecMock);
         when(requestHeadersSpecMock.retrieve()).thenReturn(responseSpecMock);
         when(responseSpecMock.bodyToFlux(Branch.class)).thenReturn(Flux.fromIterable(getBranches()));
 

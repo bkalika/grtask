@@ -5,7 +5,6 @@ import com.atipera.gr.dto.BranchResponseDto;
 import com.atipera.gr.dto.Repository;
 import com.atipera.gr.dto.RepositoryResponseDto;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -23,9 +22,6 @@ public class GitHubService implements IGitHubService {
 
     private final WebClient webClient;
 
-    @Value("${service.github.token}")
-    private String token;
-
     public GitHubService(WebClient webClient) {
         this.webClient = webClient;
     }
@@ -39,9 +35,11 @@ public class GitHubService implements IGitHubService {
 
     @Override
     public Flux<Repository> getNotForkedRepositories(String username) {
-        return this.webClient.get().uri("/users/{username}/repos?type=all", username)
-                .header("Accept", "application/vnd.github+json")
-                .header("Authorization", "Bearer " + token)
+        return this.webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/users/{username}/repos")
+                        .queryParam("type", "all")
+                        .build(username))
                 .retrieve()
                 .bodyToFlux(Repository.class)
                 .filter(repository -> !repository.fork());
@@ -51,8 +49,6 @@ public class GitHubService implements IGitHubService {
         String branchesUrl = repository.branchesUrl().replace("{/branch}", "");
         return this.webClient.get()
                 .uri(branchesUrl)
-                .header("Accept", "application/vnd.github+json")
-                .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .bodyToFlux(Branch.class)
                 .map(branch -> new BranchResponseDto(branch.name(), branch.commit().sha()))

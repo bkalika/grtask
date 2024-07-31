@@ -17,11 +17,16 @@ public class GitHubWebClientConfiguration {
     @Value("${service.github.url}")
     private String gitHubUrl;
 
+    @Value("${service.github.token}")
+    private String token;
+
     @Bean
     public WebClient webClient() {
         return WebClient.builder()
                 .filter(webClientErrorHandler())
                 .baseUrl(gitHubUrl)
+                .defaultHeader("Accept", "application/vnd.github+json")
+                .defaultHeader("Authorization", "Bearer " + token)
                 .build();
     }
 }
