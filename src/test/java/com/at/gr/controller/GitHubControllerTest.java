@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
@@ -101,6 +102,52 @@ public class GitHubControllerTest {
                     assertNotNull(response);
                     assertEquals(HttpStatus.BAD_REQUEST.value(), response.status());
                     assertEquals("Invalid Accept header", response.message());
+                });
+    }
+
+    @Test
+    void given404NotFoundResponseWhenGetNotForkedRepositoriesThenShouldReturnApplicationException() throws IOException {
+        String jsonResponseRepos = new String(Files.readAllBytes(Paths.get("src/test/resources/notfound.json")));
+        wireMockServer.stubFor(get(urlPathMatching("/users/.+/repos"))
+                .willReturn(aResponse()
+                        .withStatus(HttpStatus.NOT_FOUND.value())
+                        .withHeader(HttpHeaders.CONTENT_TYPE, "application/json; charset=utf-8")
+                        .withBody(jsonResponseRepos)));
+
+        webTestClient.get()
+                .uri("/api/v1/users/{username}/repositories", "testuser")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(ApplicationExceptionDto.class)
+                .consumeWith(response -> {
+                    ApplicationExceptionDto applicationExceptionDto = response.getResponseBody();
+                    assert applicationExceptionDto != null;
+                    assertEquals(400, applicationExceptionDto.status());
+                    assertEquals(jsonResponseRepos, applicationExceptionDto.message());
+                });
+    }
+
+    @Test
+    void given401UnauthorizedResponseWhenGetNotForkedRepositoriesThenShouldReturnApplicationException() throws IOException {
+        String jsonResponseRepos = new String(Files.readAllBytes(Paths.get("src/test/resources/unauthorized.json")));
+        wireMockServer.stubFor(get(urlPathMatching("/users/.+/repos"))
+                .willReturn(aResponse()
+                        .withStatus(HttpStatus.UNAUTHORIZED.value())
+                        .withHeader(HttpHeaders.CONTENT_TYPE, "application/json; charset=utf-8")
+                        .withBody(jsonResponseRepos)));
+
+        webTestClient.get()
+                .uri("/api/v1/users/{username}/repositories", "testuser")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(ApplicationExceptionDto.class)
+                .consumeWith(response -> {
+                    ApplicationExceptionDto applicationExceptionDto = response.getResponseBody();
+                    assert applicationExceptionDto != null;
+                    assertEquals(400, applicationExceptionDto.status());
+                    assertEquals(jsonResponseRepos, applicationExceptionDto.message());
                 });
     }
 }
